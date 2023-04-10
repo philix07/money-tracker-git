@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "179498765521",
+    "project_id": "money-tracker-69bcd",
+    "storage_bucket": "money-tracker-69bcd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:179498765521:android:d1728d1be70d0d13c849f0",
+        "android_client_info": {
+          "package_name": "com.felix.money_tracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "179498765521-jkn7jotjuq5ktkv2ggf5h5j04fntdjtk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUnZ4w7H0yD8DkDOCpcIKQ5UmUzcU7DzM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "179498765521-jkn7jotjuq5ktkv2ggf5h5j04fntdjtk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
