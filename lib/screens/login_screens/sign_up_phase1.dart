@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:money_tracker/screens/login_screens/sign_up_phase2.dart';
-import 'package:money_tracker/utils/color_utils.dart';
+import 'package:money_tracker/screens/auth/auth_page.dart';
+import 'package:money_tracker/services/auth.dart';
 import 'package:money_tracker/utils/font_utils.dart';
 import 'package:money_tracker/utils/logo_utils.dart';
 import 'package:money_tracker/utils/scaffold_utils.dart';
@@ -16,95 +16,96 @@ class SignUpPhase1 extends StatefulWidget {
 class _SignUpPhase1State extends State<SignUpPhase1> {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _passwordConfirmationController = TextEditingController();
-
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return ScaffoldUtil.getScaffold(
-      body: Container(
-        alignment: Alignment.topCenter,
-        child: SingleChildScrollView(
-          child: Stack(
-            alignment: Alignment.center,
+      body: SingleChildScrollView(
+        child: Form(
+          key: _formKey,
+          child: Column(
             children: [
-              SizedBox(
-                // DevicesHeight - AppBarHeight
-                height: Util.setHeight(
-                    mediaQuery: MediaQuery.of(context).size.height),
-                child: Column(
-                  children: [
-                    SizedBox(
-                      height: 5.0,
-                    ),
-                    LogoUtil.getLogo(),
-                    Text(
-                      'Create new account',
-                      style: FontsUtil.getParagraphStyle(
-                          fontSize: 20.0, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(
-                      height: 40.0,
-                    ),
-                    Text(
-                      "What's your email",
-                      textAlign: TextAlign.left,
-                      style: FontsUtil.getParagraphStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 5.0),
-                    Util.getLoginTextField(
-                      controller: _emailController,
-                      textInputType: TextInputType.emailAddress,
-                    ),
-                    CustomSizedBox(),
-                    Text(
-                      "Enter your password",
-                      style: FontsUtil.getParagraphStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 5.0),
-                    Util.getLoginTextField(
-                      controller: _passwordController,
-                      textInputType: TextInputType.visiblePassword,
-                      obscureText: true,
-                    ),
-                    CustomSizedBox(),
-                    Text(
-                      "Enter your password again",
-                      style: FontsUtil.getParagraphStyle(
-                          fontSize: 18.0, fontWeight: FontWeight.bold),
-                    ),
-                    SizedBox(height: 5.0),
-                    Util.getLoginTextField(
-                      controller: _passwordConfirmationController,
-                      textInputType: TextInputType.visiblePassword,
-                      obscureText: true,
-                    ),
-                  ],
+              LogoUtil.getLogo(),
+              Text(
+                'Create new account',
+                style: FontsUtil.getParagraphStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
                 ),
               ),
-              Positioned(
-                width: 180.0,
-                height: 40.0,
-                bottom: 0.0,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(builder: (context) => SignUpPhase2()),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: ColorsUtil.btn,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20.0),
-                    ),
-                  ),
-                  child: Text(
-                    'Sign Up',
-                    style: FontsUtil.getButtonStyle(),
-                  ),
+              CustomSizedBox(60.0),
+              Text(
+                'Enter your email',
+                style: FontsUtil.getParagraphStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
                 ),
-              )
+              ),
+              CustomSizedBox(8.0),
+              CustomTextFormField(
+                textFormField: TextFormField(
+                  controller: _emailController,
+                  decoration: Util.getInputDecoration(),
+                  validator: ((value) {
+                    return value!.isEmpty ? 'Email cannot null' : null;
+                  }),
+                ),
+              ),
+              CustomSizedBox(15.0),
+              Text(
+                'Enter your password',
+                style: FontsUtil.getParagraphStyle(
+                  fontSize: 20.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              CustomSizedBox(8.0),
+              CustomTextFormField(
+                textFormField: TextFormField(
+                  controller: _passwordController,
+                  decoration: Util.getInputDecoration(),
+                  obscureText: true,
+                  validator: ((value) {
+                    return value!.isEmpty ? 'Password cannot null' : null;
+                  }),
+                ),
+              ),
+              CustomSizedBox(25.0),
+              Util.getNormalButton(
+                text: 'Register',
+                function: (() {
+                  if (_formKey.currentState!.validate()) {
+                    // Do action if it's Valid
+
+                    // Registering New User To The Firebase
+                    AuthService.registerUser(
+                      emailController: _emailController.text,
+                      passwordController: _passwordController.text,
+                    );
+
+                    // Move to the SignIn page to ease user login
+                    Navigator.of(context).push(
+                      MaterialPageRoute(builder: (context) => AuthPage()),
+                    );
+
+                    // Show Confirmation Message that the
+                    // account is SUCCESSFULLY created
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          content: dialogContent(context),
+                        );
+                      },
+                    );
+
+                    print('Valid');
+                  } else {
+                    // If it's Invalid
+                    print('Invalid');
+                  }
+                }),
+              ),
             ],
           ),
         ),
@@ -113,8 +114,21 @@ class _SignUpPhase1State extends State<SignUpPhase1> {
   }
 }
 
-SizedBox CustomSizedBox() {
-  return SizedBox(
-    height: 15.0,
+SizedBox CustomSizedBox(double height, {double width = 0}) {
+  return SizedBox(height: height);
+}
+
+SizedBox CustomTextFormField({required TextFormField textFormField}) {
+  return SizedBox(height: 50, width: 300, child: textFormField);
+}
+
+Widget dialogContent(BuildContext context) {
+  return Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Text('Confirmation'),
+      SizedBox(height: 16),
+      Text('Your Account Has Successfully Created'),
+    ],
   );
 }

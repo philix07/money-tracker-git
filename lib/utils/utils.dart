@@ -7,10 +7,11 @@ class Util {
     return mediaQuery - 108.0;
   }
 
-  static SizedBox getLoginTextField(
-      {required TextEditingController controller,
-      required TextInputType textInputType,
-      bool obscureText = false}) {
+  static SizedBox getLoginTextField({
+    required TextEditingController controller,
+    required TextInputType textInputType,
+    bool obscureText = false,
+  }) {
     return SizedBox(
       height: 50,
       width: 300,
@@ -96,6 +97,41 @@ class Util {
           text,
           style: FontsUtil.getButtonStyle(),
         ),
+      ),
+    );
+  }
+
+  static SizedBox getValidatorTextField({
+    required TextEditingController controller,
+    required TextInputType textInputType,
+    required String? function(String? val),
+    bool obscureText = false,
+  }) {
+    return SizedBox(
+      height: 50,
+      width: 300,
+      child: TextFormField(
+        validator: function,
+        controller: controller,
+        keyboardType: textInputType,
+        decoration: InputDecoration(
+          filled: true,
+          fillColor: Color(0xff777777),
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.all(Radius.circular(18.0)),
+          ),
+        ),
+        obscureText: obscureText,
+      ),
+    );
+  }
+
+  static InputDecoration getInputDecoration() {
+    return InputDecoration(
+      filled: true,
+      fillColor: Color(0xff777777),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(18.0)),
       ),
     );
   }

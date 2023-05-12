@@ -8,7 +8,7 @@ class ScaffoldUtil {
       backgroundColor: ColorsUtil.background,
       appBar: AppBarUtil.getAppBar(),
       body: Container(
-        alignment: Alignment.center,
+        alignment: Alignment.topCenter,
         padding: EdgeInsets.only(top: 5.0),
         child: body,
       ),

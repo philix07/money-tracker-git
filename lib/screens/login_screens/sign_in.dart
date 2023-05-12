@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:money_tracker/screens/auth/auth_service.dart';
+import 'package:money_tracker/screens/login_screens/sign_up_phase1.dart';
+import 'package:money_tracker/services/auth.dart';
 import 'package:money_tracker/screens/login_screens/forgot_password.dart';
 import 'package:money_tracker/utils/color_utils.dart';
 import 'package:money_tracker/utils/font_utils.dart';
@@ -68,10 +69,22 @@ class _SignInState extends State<SignIn> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.fromLTRB(65, 0, 0, 0),
-                    child: Text(
-                      'use at least 8 character',
-                      textAlign: TextAlign.left,
-                      style: FontsUtil.getParagraphStyle(fontSize: 10.0),
+                    child: TextButton(
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) => SignUpPhase1(),
+                          ),
+                        );
+                      },
+                      child: Text(
+                        "register new account",
+                        textAlign: TextAlign.right,
+                        style: TextStyle(
+                          color: ColorsUtil.btn,
+                          fontSize: 12.0,
+                        ),
+                      ),
                     ),
                   ),
                   Padding(

@@ -11,6 +11,7 @@ class SignUpPhase2 extends StatefulWidget {
   State<SignUpPhase2> createState() => _SignUpPhase2State();
 }
 
+// Validator is missing
 class _SignUpPhase2State extends State<SignUpPhase2> {
   final _nameController = TextEditingController();
   final _monthlySalaryController = TextEditingController();
@@ -64,7 +65,7 @@ class _SignUpPhase2State extends State<SignUpPhase2> {
             SizedBox(height: 20.0),
             Util.getNormalButton(
               function: () {},
-              text: "Register",
+              text: "Save",
             )
           ],
         ),

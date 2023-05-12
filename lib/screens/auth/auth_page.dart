@@ -1,9 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:money_tracker/screens/homepage_screens/homepage.dart';
-import 'package:money_tracker/screens/login_screens/login_page.dart';
-import 'package:money_tracker/sign_in_test/sign_in_page_test.dart';
-import 'package:money_tracker/sign_in_test/sign_out_page_test.dart';
+import 'package:money_tracker/screens/login_screens/sign_in.dart';
+
 
 class AuthPage extends StatefulWidget {
   const AuthPage({super.key});
@@ -21,10 +20,14 @@ class _AuthPageState extends State<AuthPage> {
         builder: ((context, snapshot) {
           if (snapshot.hasData) {
             // User is logged in, display home screen
-            return SignOutTest();
+            return HomePage();
           } else {
             // User is not logged in, display login screen
-            return LoginPage();
+
+            // IMPORTANT NOTE, KALAU KU TARUH LoginPage DISINI
+            // DIA NGGA BAKAL KE DETECT LOGINNYA 
+            // JADI HARUS LANGSUNG TARUH SignIn PAGENYA !!!!!
+            return SignIn();
           }
         }),
       ),
